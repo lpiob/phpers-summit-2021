@@ -1,0 +1,23 @@
+version: '3'
+services:
+  web:
+    build: ./files/web/build/
+    ports:
+      - 9000:80
+    volumes:
+      - ./files/web/etc/resolv.conf:/etc/resolv.conf
+      - ./files/app/:/var/www/html
+    depends_on:
+      - redis
+  worker:
+    build: ./files/worker/build/
+    command: ./run.sh
+    working_dir: /data
+    volumes:
+      - ./files/web/etc/resolv.conf:/etc/resolv.conf
+      - ./files/app/:/data/
+    depends_on:
+      - redis
+  redis:
+    image: redis:6.2.5-buster
+
