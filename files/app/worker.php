@@ -1,17 +1,15 @@
 <?php
 
 $fh=fopen("log.txt", "w+");
+require("config.php");
+$redis = new Redis();
+$redis->connect($redis_addr, 6379, 1);
 
 for ($i=100; $i>0; $i--) {
   $ts=microtime(true);
 
-  require("config.php");
-
   $vote_a=0;
   $vote_b=0;
-
-  $redis = new Redis();
-  $redis->connect($redis_addr, 6379, 1);
 
   $votes=$redis->lrange('votes', 0, -1);    // fetch all votes in list
 
